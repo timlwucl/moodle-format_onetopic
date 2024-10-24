@@ -47,27 +47,18 @@ export const init = () => {
             link = url.split('#')[0]; // Keep only the URL w/o any anchors.
             sectionId = link.split('section=')[1] ?? 1; // Get the section ID from the URL.
         }
-
         let tabsVisible = document.getElementById("tabs-tree-start").classList.contains("hastopictabs");
-        let contentToReplace = "#tabs-tree-start .onetopic-tab-body";
+        let contentToReplace = ".course-content-header"; // persists whether tabs are visible or not
         if(tabsVisible==false) {
-            contentToReplace = "#tabs-tree-start>div[role='main']";
+            console.log("tags not visible");
         }
         let xhrSection1 = new XMLHttpRequest();
         xhrSection1.responseType = "document";
         xhrSection1.onload = () => {
             let doc = xhrSection1.response;
             let tabBody = document.querySelector(contentToReplace);
-            if (tabBody.length){
-                tabBody.textContent = '';
-                tabBody.insertAdjacentHTML("beforeend",
-                    doc.querySelector(contentToReplace).innerHTML);
-            } else { // Follow the Topic navigation element instead
-                const navElement = document.querySelector('#ucl-section-navigation');
-                const linkElement = navElement.querySelector('a');
-                if (linkElement && linkElement.href) {
-                  //  window.location.href = linkElement.href;
-                }
+            if (tabBody) {
+                tabBody.insertAdjacentHTML("beforeend", doc.querySelector(contentToReplace).innerHTML);
             }
             if(tabsVisible) {
                 document.querySelector("a.nav-link[href*='section=" + sectionId + "#tabs-tree-start']").classList.add("active");

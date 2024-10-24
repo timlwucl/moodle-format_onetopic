@@ -58,9 +58,17 @@ export const init = () => {
         xhrSection1.onload = () => {
             let doc = xhrSection1.response;
             let tabBody = document.querySelector(contentToReplace);
-            tabBody.textContent = '';
-            tabBody.insertAdjacentHTML("beforeend",
-                doc.querySelector(contentToReplace).innerHTML);
+            if (tabBody.length){
+                tabBody.textContent = '';
+                tabBody.insertAdjacentHTML("beforeend",
+                    doc.querySelector(contentToReplace).innerHTML);
+            } else { // Follow the Topic navigation element instead
+                const navElement = document.querySelector('#ucl-section-navigation');
+                const linkElement = navElement.querySelector('a');
+                if (linkElement && linkElement.href) {
+                  //  window.location.href = linkElement.href;
+                }
+            }
             if(tabsVisible) {
                 document.querySelector("a.nav-link[href*='section=" + sectionId + "#tabs-tree-start']").classList.add("active");
             }
